@@ -81,13 +81,21 @@ long array_length(Array a){
 }
 
 void array_reserve(Array* a, long capacity){
-    
+    Array new = (Array){malloc(sizeof(long)*capacity), 0, 0, capacity};
+    for(Array b = array_save(*a); !array_empty(b); array_popFront(&b)){
+        array_insertBack(&new, array_front(b));
+    }
+    memcpy(&a, &new, sizeof(new));
+    array_destroy(new);
 }
 
 
 // Modifiers
 
 void array_insertBack(Array* a, long stuff){
+    if(array_length(*a) > (a->capacity-1)){
+        array_reserve(a, (long)(a->capacity*2));
+    }
     a->back++;
     a->data[a->back - 1] = stuff;
 }
