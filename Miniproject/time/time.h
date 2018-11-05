@@ -1,7 +1,8 @@
 
 #include <time.h>
+#include <unistd.h>
+#define _GNU_SOURCE
 #include <sys/syscall.h>
-
 
 int clock_nanosleep(clockid_t clock_id, int flags, const struct timespec* request, struct timespec* remain) {
     return syscall(__NR_clock_nanosleep, clock_id, flags, request, remain);
@@ -35,3 +36,4 @@ int timespec_cmp(struct timespec lhs, struct timespec rhs){
         return 1;
     return lhs.tv_nsec - rhs.tv_nsec;
 }
+
